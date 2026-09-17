@@ -197,7 +197,9 @@ task 2.4 (делимость на три)
 -- Задайте терм divides3 n: true, если n делится на 3 без остатка, иначе false.
 -- Вспомогательные определения можно добавлять выше основного.
 
-divides3 := ...
+troika := \a b c. pair a (pair b c)
+nextTroika := \t. troika (snd (snd t)) (fst t) (fst (snd t))
+divides3 := \n. if fst (n nextTroika (troika true false false))
 expect divides3 0 = true
 expect divides3 1 = false
 expect divides3 2 = false
@@ -211,7 +213,8 @@ task 2.5 (предыдущее число)
 -- Задайте терм pred n, находящий предыдущее число Чёрча (pred 0 = 0).
 -- Подсказка: пройдите от 0 до n, храня пару «предыдущее, текущее».
 
-pred := ...
+nextPair := \p. pair (suc (fst p)) (fst p)
+pred := \n. snd (n nextPair (pair 0 0))
 expect pred 0 = 0
 expect pred 1 = 0
 expect pred 2 = 1
