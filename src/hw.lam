@@ -140,7 +140,18 @@ task 2.1 (β-эквивалентность комбинаторов: B)
 
 chain t2_1 from (S (K S) K) to B =
   S (K S) K
-  ~S~> ...
+  ~S~> (\x y z. x z (y z)) (K S) K
+  ~b~> (\y z. (K S) z (y z)) K
+  ~b~> \z. K S z (K z)
+  ~K~> \z. (\x y. x) S z (K z)
+  ~b~> \z. (\y. S) z (K z)
+  ~b~> \z. S (K z)
+  ~S~> \z. (\x y z2. x z2 (y z2)) (K z)
+  ~b~> \z y z2. (K z) z2 (y z2)
+  ~K~> \z y z2. (\x y. x) z z2 (y z2)
+  ~b~> \z y z2. (\y. z) z2 (y z2)
+  ~b~> \z y z2. z (y z2)
+  ~B~> B
 
 
 task 2.2 (подстановка и нормальная форма)
@@ -150,7 +161,15 @@ task 2.2 (подстановка и нормальная форма)
 
 chain t2_2 from ([x |-> S] x (\z x. z x) (\z y x. x) x) =
   [x |-> S] x (\z x. z x) (\z y x. x) x
-  ~s~> ...
+  ~s~> S (\z x. z x) (\z y x. x) S
+  ~S~> (\x y z. x z (y z)) (\z x. z x) (\z y x. x) S
+  ~~> (\z x. z x) S ((\z y x. x) S)
+  ~~> S ((\z y x. x) S)
+  ~~> (\x y z. x z (y z)) ((\z y x. x) S)
+  ~~> \y z. ((\z y x. x) S) z (y z)
+  ~~> \y z. (\x. x) (y z)
+  ~~> \y z. y z
+
 
 
 task 2.3 (подстановка двух имён)
@@ -159,7 +178,19 @@ task 2.3 (подстановка двух имён)
 
 chain t2_3 from ([x |-> K, y |-> B] y (K (\z. x x (x z x)) y) (\x. x x x) I) =
   [x |-> K, y |-> B] y (K (\z. x x (x z x)) y) (\x. x x x) I
-  ~s~> ...
+  ~s~> B (K (\z. K K (K z K)) B) (\x. x x x) I
+  ~B~> (\f g x. f (g x)) (K (\z. K K (K z K)) B) (\x. x x x) I
+  ~~> (K (\z. K K (K z K)) B) ((\x. x x x) I)
+  ~~> (K (\z. K K (K z K)) B) (I I I)
+  ~~> (\z. K K (K z K)) (I I I)
+  ~~> (\z. K K (K z K)) (I I)
+  ~~> (\z. K K (K z K)) I
+  ~~> K K (K I K)
+  ~~> K K ((\t e. t) I K)
+  ~~> K K I
+  ~~> (\t e. t) K I
+  ~~> K
+  ~K~> \t e. t
 
 
 task 2.4 (делимость на три)
